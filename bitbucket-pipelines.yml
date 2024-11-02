@@ -1,0 +1,34 @@
+image: python:3.12
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: "Git Secrets Scan"
+            script:
+              - pipe: atlassian/git-secrets-scan:2.0.2
+        - step:
+            name: "Code mit Ruff linten und formatieren"
+            caches:
+              - pip
+            script:
+              - pip install ruff
+              - ruff check .
+              - ruff check . --fix
+        - step:
+            name: "Run Tests"
+            caches:
+              - pip
+            script:
+              - pip install poetry
+              - poetry install
+              - poetry run pytest --cov=${PACKAGE_NAME} --cov-report=xml
+        - step:
+            name: "Snyk Sicherheitsüberprüfung"
+            script:
+              - pipe: snyk/snyk-scan:1.0.2
+                variables:
+                  SNYK_TOKEN: $SNYK_TOKEN
+                  LANGUAGE: "python"
+                  SEVERITY_THRESHOLD: "high"
+                  CODE_INSIGHTS_RESULTS: "true"
