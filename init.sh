@@ -101,3 +101,22 @@ else
     #      --author "${USER_NAME} ${USER_SURNAME} <${USER_EMAIL}>"
     # echo "poetry init has been run succesfully"
 fi
+
+################### Virtual Environment #######################
+# configure poetry to use .venv for python environments
+poetry config virtualenvs.prefer-active-python true
+
+if ! uv venv --python "${PACKAGE_PY_VERSION}"; then
+    echo "Error creating virtual environment with Python ${PACKAGE_PY_VERSION}."
+    exit 1
+fi
+echo "virtual ${PACKAGE_PY_VERSION} environment created"
+# pythonpath and poetry dir will be set to current dir 
+# everytime the virtual environment is activated with 'source .venv/bin/activate'
+sed -i '/# The hash command/i \
+\n# PYTHONPATH will be set to the current directory every time the virtual environment is activated\nexport PATH="${HOME}/.local/bin:$PATH"\nexport PYTHONPATH="$(dirname "$VIRTUAL_ENV")":$PYTHONPATH\n' .venv/bin/activate
+export PATH="${HOME}/.local/bin:$PATH"
+echo "virtual environment created and pythonpath updated"
+# activates the environment (use the 'deactivate' command to exit)
+source .venv/bin/activate
+echo "virtual environment activated"
