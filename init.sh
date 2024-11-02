@@ -12,7 +12,13 @@ else
 fi
 
 # Rename the current directory to the value of PACKAGE_NAME
-mv "$(pwd)" "$(dirname "$(pwd)")/${PACKAGE_NAME}"
+CURRENT_DIR=$(basename "$PWD")
+# Only rename if the current directory is not already the desired package name
+if [ "$CURRENT_DIR" != "$PACKAGE_NAME" ]; then
+    mv "$PWD" "$(dirname "$PWD")/${PACKAGE_NAME}"
+fi
+# resets current pwd to package name
+cd .
 
 # Prompt for Python version with strict validation
 echo "Use python 3.13 as soon as possible, due to its built-in support for multi-threaded operations"
