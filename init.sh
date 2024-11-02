@@ -167,8 +167,17 @@ poetry run pre-commit install
 # Replace the Python version in bitbucket-pipelines.yml
 sed -i "1s|^image: python:.*|image: python:${PACKAGE_PY_VERSION}|" bitbucket-pipelines.yml
 
+#################### Run first test #######################
 # Run tests with coverage report
 echo "Running tests with coverage report..."
 poetry run pytest --cov="${PACKAGE_NAME}" --cov-report=html
 echo "Running tests with coverage report... - poetry syntax"
 poetry run coverage html
+# Check if the coverage report was generated
+COV_REPORT_DIR="htmlcov"
+if [ -d "${COV_REPORT_DIR}" ]; then
+    echo "Coverage report generated successfully."
+else
+    echo "Error: Coverage report was not generated correctly."
+    exit 1
+fi
