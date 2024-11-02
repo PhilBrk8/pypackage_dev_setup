@@ -5,7 +5,7 @@ Copy this codeblock and run it in the terminal to set up the project:
 ```bash
 curl -O https://raw.githubusercontent.com/PhilBrk8/pypackage_dev_setup/main/clone_and_run.sh
    chmod +x clone_and_run.sh
-   ./clone_and_run.sh
+   bash clone_and_run.sh
 ```
 
 # Usage
