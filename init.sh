@@ -215,3 +215,15 @@ elif [ "${INIT_GIT}" = "n" ] || [ "${INIT_GIT}" = "N" ]; then
 else
     echo "Something strange failed at git initialization."
 fi
+
+# Prompt the user to start developing the package
+read -p "Start developing the package? (y/n): " START_DEV
+# Check user input
+if [ "$START_DEV" = "y" ] || [ "$START_DEV" = "Y" ]; then
+    echo "Starting development mode..."
+    # Self-delete the script for a clean package template
+    trap 'rm -- "$0"' EXIT
+    echo "Script has been deleted for a clean setup."
+else
+    echo "Development not started. Script will remain intact."
+fi
