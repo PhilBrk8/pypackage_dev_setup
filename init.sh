@@ -120,3 +120,33 @@ echo "virtual environment created and pythonpath updated"
 # activates the environment (use the 'deactivate' command to exit)
 source .venv/bin/activate
 echo "virtual environment activated"
+
+#################### Poetry setup and package installation #######################
+AUTHOR="${USER_NAME} ${USER_SURNAME} <${USER_EMAIL}>"
+    # Update the Python version in pyproject.toml
+    # Ensure pyproject.toml has the correct package name
+    # Replace the authors line in pyproject.toml
+sed -i \
+    -e "s/^python = \".*\"/python = \"^${PACKAGE_PY_VERSION}\"/" \
+    -e "s/^name = .*/name = \"${PACKAGE_NAME}\"/" \
+    -e "s/^authors = \[\".*\"\]/authors = \[\"${USER_NAME} ${USER_SURNAME} <${USER_EMAIL}>\"\]/" \
+    pyproject.toml
+# sed -i "s/^python = \".*\"/python = \"^${PACKAGE_PY_VERSION}\"/" pyproject.toml
+# sed -i "s/^name = .*/name = \"${PACKAGE_NAME}\"/" pyproject.toml
+# sed -i "s/^authors = \[\".*\"\]/authors = \[\"${AUTHOR}\"\]/" pyproject.toml
+mkdir "$PACKAGE_NAME"
+touch "$PACKAGE_NAME"/__init__.py
+# add dependencies
+poetry add mypy python-dotenv
+poetry add --group dev pytest pytest-cov pytest-asyncio pytest-httpx pre-commit ruff bandit safety
+echo "poetry add has added python packages"
+# sets up project structure required for the install command 
+poetry install
+echo "poetry install has been run"
+# Verify that pyproject.toml was created
+if [ ! -f pyproject.toml ]; then
+    echo "Error: pyproject.toml was not created. Exiting."
+    exit 1
+else
+    echo "project.toml created"
+fi
