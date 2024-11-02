@@ -181,3 +181,37 @@ else
     echo "Error: Coverage report was not generated correctly."
     exit 1
 fi
+
+cho ""
+echo "Current location: $(pwd)"
+echo "########################### Last Steps ############################"
+echo "And now the only thing left is:
+echo "Initialize a local git repo and connect it to your bitbucket repo"
+echo "###################################################################"
+echo ""
+
+# reload the current directory path:
+cd .
+read -p "Möchtest du ein neues Git-Repository initialisieren? (y/n): " INIT_GIT
+
+if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
+    rm -rf .git # Clean up any existing Git configuration
+    git init
+    git branch -m main
+    echo "Git-Repository initialised."
+    # Connect to remote and push initial branch
+    read -p "What is the location of your remote repo? [URL]: " URL
+    git remote add origin "${URL}"
+    read -p "What feature do you want to develop first? [does_this]: " FIRST_FEATURE_NAME
+    git checkout -b feature/"${FIRST_FEATURE_NAME}"
+    git push -u origin main
+    git push -u origin feature/"${FIRST_FEATURE_NAME}"
+    echo "Remote-Repository connected."
+
+elif [ "${INIT_GIT}" = "n" ] || [ "${INIT_GIT}" = "N" ]; then
+    rm -rf .git
+    echo "Git-Repository init wurde Übersprungen."
+
+else
+    echo "Something strange failed at git initialization."
+fi
