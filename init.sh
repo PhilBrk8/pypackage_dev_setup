@@ -150,3 +150,25 @@ if [ ! -f pyproject.toml ]; then
 else
     echo "project.toml created"
 fi
+
+#################### Pre-commit-hooks #######################
+# Pre-commit installieren und Hooks initialisieren
+pre-commit clean
+# updates all hooks in .pre-commit-hooks.yaml to their latest version
+echo "pre-commit-hooks updating..."
+pre-commit autoupdate
+# gives logs if something is wrong whith the hooks
+echo "run pre-commit with verbose parameter:"
+pre-commit run --all-files --verbose
+echo "pre-commit-hooks installing..."
+poetry run pre-commit install
+
+#################### Pipelines #######################
+# Replace the Python version in bitbucket-pipelines.yml
+sed -i "1s|^image: python:.*|image: python:${PACKAGE_PY_VERSION}|" bitbucket-pipelines.yml
+
+# Run tests with coverage report
+echo "Running tests with coverage report..."
+poetry run pytest --cov="${PACKAGE_NAME}" --cov-report=html
+echo "Running tests with coverage report... - poetry syntax"
+poetry run coverage html
