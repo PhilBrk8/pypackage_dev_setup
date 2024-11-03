@@ -221,7 +221,7 @@ echo ""
 
 # reload the current directory path:
 cd .
-
+mv README.md README_DEV.md
 
 if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     rm -rf .git # Clean up any existing Git configuration
