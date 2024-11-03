@@ -60,6 +60,7 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
             read -p "Try this SSH-connection? (y/n): " SECOND_CONFIRM_SSH
             if [[ "$SECOND_CONFIRM_SSH" =~ ^[yY]$ ]]; then
                 REMOTE_REPO_URL=$SUGGESTED_SSH_URL
+            fi
         fi
     fi
 fi
