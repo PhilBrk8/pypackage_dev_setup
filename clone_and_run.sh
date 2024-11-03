@@ -17,3 +17,6 @@ cd "$PACKAGE_NAME" || exit
 # Run the initialization script
 chmod +x init.sh
 ./init.sh "$PACKAGE_NAME"
+
+# Self-delete the script for a clean package template
+trap 'rm -- "$0"' EXI
