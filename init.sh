@@ -39,7 +39,7 @@ done
 echo "Please provide your personal information (used to make you the author of the package)"
 read -p "What is your name? [Name]: " USER_NAME
 read -p "What is your surname? [Surname]: " USER_SURNAME
-read -p "What is your email? [name.surname@esforin.com]: " USER_EMAIL
+read -p "What is your email? [name.surname@mailprovider.com]: " USER_EMAIL
 read -p "What feature do you want to develop first? [does_this]: " FIRST_FEATURE_NAME
 # Check if the URL is using HTTPS
 read -p "Möchtest du ein neues Git-Repository initialisieren? (y/n): " INIT_GIT
