@@ -227,7 +227,7 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     rm -rf .git # Remove any existing Git configuration
     git init # initialize a new repository
     git branch -m main # rename master to main branch
-    git git add --all -- ':!init.sh' ':!clone_and_run.sh' # Add and commit relevant files to main
+    git add --all -- ':!init.sh' ':!clone_and_run.sh' # Add and commit relevant files to main
     git commit -m "initialization of the project structure"
     git remote add origin "${REMOTE_REPO_URL}" # Connect to the remote repository
     git fetch origin main # Fetch the latest changes from the remote repository without merging
@@ -236,7 +236,7 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     echo "Remote-Repository connected to main branch."
     git checkout -b feature/"${FIRST_FEATURE_NAME}" # Create a new feature branch
     touch "${PACKAGE_NAME}"/"${FIRST_FEATURE_NAME}".py
-    git git add --all -- ':!init.sh' ':!clone_and_run.sh' # Add and commit relevant files to the feature branch
+    git add --all -- ':!init.sh' ':!clone_and_run.sh' # Add and commit relevant files to the feature branch
     git commit -m "initialization of the feature branch ${FIRST_FEATURE_NAME}"
     git push -u origin feature/"${FIRST_FEATURE_NAME}" # , set upstream tracking, and push it to the remote
     echo "Remote-Repository connected to feature branch."
