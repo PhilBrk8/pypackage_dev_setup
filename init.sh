@@ -62,9 +62,6 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     fi
 fi
 
-# Example command to set the remote, assuming the user agreed to SSH or the initial URL provided is HTTPS
-git remote add origin "$REMOTE_REPO_URL"
-
 #################### install checks #######################
 # Check if python3 is installed - and install if not
 if ! command -v python3 &> /dev/null
