@@ -19,4 +19,4 @@ chmod +x init.sh
 ./init.sh "$PACKAGE_NAME"
 
 # Self-delete the script for a clean package template
-trap 'rm -- "$0"' EXI
+trap 'rm -- "$0"' EXIT
