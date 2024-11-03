@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e  # Exit on error
+# set -e  # Exit on error
 
 #################### User inputs #######################
 # Check if PACKAGE_NAME was provided as an argument
