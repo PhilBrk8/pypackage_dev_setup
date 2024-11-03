@@ -191,7 +191,7 @@ fi
 echo ""
 echo "Current location: $(pwd)"
 echo "########################### Last Steps ############################"
-echo "And now the only thing left is:
+echo "And now the only thing left is:"
 echo "Initialize a local git repo and connect it to your remote repo"
 echo "###################################################################"
 echo ""
