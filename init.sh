@@ -171,7 +171,7 @@ poetry run pre-commit install
 
 #################### Pipelines #######################
 # Replace the Python version in bitbucket-pipelines.yml
-sed -i "1s|^image: python:.*|image: python:${PACKAGE_PY_VERSION}|" bitbucket-pipelines.yml
+sed -i "1s|^image: python:.*|image: python:${PACKAGE_PY_VERSION}|" bitbucket-pipelines.yml .gitlab-ci.yml
 
 #################### Run first test #######################
 # Run tests with coverage report

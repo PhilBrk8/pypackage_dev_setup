@@ -1,0 +1,60 @@
+image: python:3.12
+
+stages:
+  - secrets_scan
+  - lint
+  - test
+  - security
+
+variables:
+  PACKAGE_NAME: "your_package_name" # Define PACKAGE_NAME, as it’s used in your pytest command
+
+secrets_scan:
+  stage: secrets_scan
+  script:
+    - echo "Running Git Secrets Scan"
+    - git-secrets --scan # Install and run Git secrets manually as an alternative to the Bitbucket pipe
+  before_script:
+    - apt-get update && apt-get install -y git-secrets
+    - git secrets --install
+    - git secrets --register-aws
+
+lint:
+  stage: lint
+  cache:
+    paths:
+      - .cache/pip
+  script:
+    - pip install ruff
+    - ruff check .
+    - ruff check . --fix
+
+sast:
+  stage: test
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
+test:
+  stage: test
+  cache:
+    paths:
+      - .cache/pip
+  script:
+    - pip install poetry
+    - poetry install
+    - poetry run pytest --cov=${PACKAGE_NAME} --cov-report=xml
+
+snyk_scan:
+  stage: security
+  script:
+    - echo "Running Snyk Security Scan"
+    - snyk test --severity-threshold=high --all-projects --json > snyk_report.json # Manual snyk scan for GitLab
+  only:
+    - main
+  artifacts:
+    reports:
+      dependency_scanning: snyk_report.json
+  before_script:
+    - npm install -g snyk # Install Snyk CLI
+  variables:
+    SNYK_TOKEN: $SNYK_TOKEN # Ensure your SNYK_TOKEN is set in GitLab CI/CD environment variables
