@@ -57,7 +57,9 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
             echo "Consider using SSH instead. Here’s an equivalent SSH URL for convenience:"
             echo "   $SUGGESTED_SSH_URL"
             echo "You can use this URL to avoid typing your password every time you push or pull."
-            REMOTE_REPO_URL=$SUGGESTED_SSH_URL
+            read -p "Try this SSH-connection? (y/n): " SECOND_CONFIRM_SSH
+            if [[ "$SECOND_CONFIRM_SSH" =~ ^[yY]$ ]]; then
+                REMOTE_REPO_URL=$SUGGESTED_SSH_URL
         fi
     fi
 fi
