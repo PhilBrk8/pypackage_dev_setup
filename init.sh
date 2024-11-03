@@ -188,7 +188,7 @@ else
     exit 1
 fi
 
-cho ""
+echo ""
 echo "Current location: $(pwd)"
 echo "########################### Last Steps ############################"
 echo "And now the only thing left is:
