@@ -224,16 +224,29 @@ cd .
 mv README.md README_DEV.md
 
 if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
-    rm -rf .git # Clean up any existing Git configuration
+    # Remove any existing Git configuration and initialize a new repository
+    rm -rf .git
     git init
     git branch -m main
     echo "Git-Repository initialised."
-    # Connect to remote and push initial branch
-    git remote add origin "${REMOTE_REPO_URL}"
-    git pull --rebase
+
+    # Add and commit any new or modified files in the local repository
     git add -A
     git commit -m "initialization of the project structure"
+
+    # Connect to the remote repository
+    git remote add origin "${REMOTE_REPO_URL}"
+
+    # Fetch the latest changes from the remote repository without merging
+    git fetch origin main
+
+    # Rebase your initial commit on top of the fetched remote main branch
+    git rebase origin/main
+
+    # Push the main branch to the remote, setting the upstream to origin/main
     git push -u origin main
+
+    # Create a new feature branch, set upstream tracking, and push it to the remote
     git checkout -b feature/"${FIRST_FEATURE_NAME}"
     git push -u origin feature/"${FIRST_FEATURE_NAME}"
     echo "Remote-Repository connected."
