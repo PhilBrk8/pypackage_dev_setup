@@ -204,13 +204,15 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     rm -rf .git # Clean up any existing Git configuration
     git init
     git branch -m main
+    git add -A
+    git commit -m "initialization of the project structure"
     echo "Git-Repository initialised."
     # Connect to remote and push initial branch
     read -p "What is the location of your remote repo? [URL]: " URL
     git remote add origin "${URL}"
+    git push -u origin main
     read -p "What feature do you want to develop first? [does_this]: " FIRST_FEATURE_NAME
     git checkout -b feature/"${FIRST_FEATURE_NAME}"
-    git push -u origin main
     git push -u origin feature/"${FIRST_FEATURE_NAME}"
     echo "Remote-Repository connected."
 
