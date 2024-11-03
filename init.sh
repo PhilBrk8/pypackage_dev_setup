@@ -224,32 +224,22 @@ cd .
 mv README.md README_DEV.md
 
 if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
-    # Remove any existing Git configuration and initialize a new repository
-    rm -rf .git
-    git init
-    git branch -m main
-    echo "Git-Repository initialised."
-
-    # Add and commit any new or modified files in the local repository
-    git add -A
+    rm -rf .git # Remove any existing Git configuration
+    git init # initialize a new repository
+    git branch -m main # rename master to main branch
+    git add -A # Add and commit all files in the local repository to main
     git commit -m "initialization of the project structure"
-
-    # Connect to the remote repository
-    git remote add origin "${REMOTE_REPO_URL}"
-
-    # Fetch the latest changes from the remote repository without merging
-    git fetch origin main
-
-    # Rebase your initial commit on top of the fetched remote main branch
-    git rebase origin/main
-
-    # Push the main branch to the remote, setting the upstream to origin/main
-    git push -u origin main
-
-    # Create a new feature branch, set upstream tracking, and push it to the remote
-    git checkout -b feature/"${FIRST_FEATURE_NAME}"
-    git push -u origin feature/"${FIRST_FEATURE_NAME}"
-    echo "Remote-Repository connected."
+    git remote add origin "${REMOTE_REPO_URL}" # Connect to the remote repository
+    git fetch origin main # Fetch the latest changes from the remote repository without merging
+    git rebase origin/main # Rebase your initial commit on top of the fetched remote main branch
+    git push -u origin main # Push the main branch to the remote, setting the upstream to origin/main
+    echo "Remote-Repository connected to main branch."
+    git checkout -b feature/"${FIRST_FEATURE_NAME}" # Create a new feature branch
+    touch "${PACKAGE_NAME}"/"${FIRST_FEATURE_NAME}".py
+    git add -A # Add and commit all files in the local repository to the feature branch
+    git commit -m "initialization of the feature branch ${FIRST_FEATURE_NAME}"
+    git push -u origin feature/"${FIRST_FEATURE_NAME}" # , set upstream tracking, and push it to the remote
+    echo "Remote-Repository connected to feature branch."
 
 elif [ "${INIT_GIT}" = "n" ] || [ "${INIT_GIT}" = "N" ]; then
     rm -rf .git
