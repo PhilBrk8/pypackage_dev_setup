@@ -41,22 +41,24 @@ read -p "What is your name? [Name]: " USER_NAME
 read -p "What is your surname? [Surname]: " USER_SURNAME
 read -p "What is your email? [name.surname@esforin.com]: " USER_EMAIL
 read -p "What feature do you want to develop first? [does_this]: " FIRST_FEATURE_NAME
-
 # Check if the URL is using HTTPS
-read -p "What is the location of your remote repo? [URL]: " REMOTE_REPO_URL
-if [[ "$REMOTE_REPO_URL" =~ ^https:// ]]; then
-    echo "You've entered an HTTPS URL."
-    read -p "Are you sure you don't want to use SSH for a more secure, password-less experience? (y/n): " CONFIRM_SSH
+read -p "Möchtest du ein neues Git-Repository initialisieren? (y/n): " INIT_GIT
+if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
+    read -p "What is the location of your remote repo? [URL]: " REMOTE_REPO_URL
+    if [[ "$REMOTE_REPO_URL" =~ ^https:// ]]; then
+        echo "You've entered an HTTPS URL."
+        read -p "Are you sure you don't want to use SSH for a more secure, password-less experience? (y/n): " CONFIRM_SSH
 
-    if [[ "$CONFIRM_SSH" =~ ^[nN]$ ]]; then
-        echo "Proceeding with HTTPS URL. Remember, SSH can simplify future connections by removing the need for repeated authentication."
-    else
-        # Offer an SSH URL suggestion
-        SUGGESTED_SSH_URL=$(echo "$REMOTE_REPO_URL" | sed -E 's|https://([^/]+)/(.+)|git@\1:\2|')
-        echo "Consider using SSH instead. Here’s an equivalent SSH URL for convenience:"
-        echo "   $SUGGESTED_SSH_URL"
-        echo "You can use this URL to avoid typing your password every time you push or pull."
-        REMOTE_REPO_URL=$SUGGESTED_SSH_URL
+        if [[ "$CONFIRM_SSH" =~ ^[nN]$ ]]; then
+            echo "Proceeding with HTTPS URL. Remember, SSH can simplify future connections by removing the need for repeated authentication."
+        else
+            # Offer an SSH URL suggestion
+            SUGGESTED_SSH_URL=$(echo "$REMOTE_REPO_URL" | sed -E 's|https://([^/]+)/(.+)|git@\1:\2|')
+            echo "Consider using SSH instead. Here’s an equivalent SSH URL for convenience:"
+            echo "   $SUGGESTED_SSH_URL"
+            echo "You can use this URL to avoid typing your password every time you push or pull."
+            REMOTE_REPO_URL=$SUGGESTED_SSH_URL
+        fi
     fi
 fi
 
@@ -220,7 +222,7 @@ echo ""
 
 # reload the current directory path:
 cd .
-read -p "Möchtest du ein neues Git-Repository initialisieren? (y/n): " INIT_GIT
+
 
 if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     rm -rf .git # Clean up any existing Git configuration
@@ -239,7 +241,7 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
 
 elif [ "${INIT_GIT}" = "n" ] || [ "${INIT_GIT}" = "N" ]; then
     rm -rf .git
-    echo "Git-Repository init wurde Übersprungen."
+    echo "Git-Repository init skipped."
 
 else
     echo "Something strange failed at git initialization."
