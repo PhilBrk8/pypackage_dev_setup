@@ -60,7 +60,3 @@ If using Bitbucket Pipelines, the following steps are included:
 # Lizenz
 
 Dieses Projekt steht unter der [MIT-Lizenz](LICENSE)
-
-```
-
-```
