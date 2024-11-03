@@ -47,8 +47,7 @@ if [ "${INIT_GIT}" = "y" ] || [ "${INIT_GIT}" = "Y" ]; then
     read -p "What is the location of your remote repo? [URL]: " REMOTE_REPO_URL
     if [[ "$REMOTE_REPO_URL" =~ ^https:// ]]; then
         echo "You've entered an HTTPS URL."
-        read -p "Are you sure you don't want to use SSH for a more secure, password-less experience? (y/n): " CONFIRM_SSH
-
+        read -p "Don't you want to rather use SSH for a more secure, password-less experience? (y/n): " CONFIRM_SSH
         if [[ "$CONFIRM_SSH" =~ ^[nN]$ ]]; then
             echo "Proceeding with HTTPS URL. Remember, SSH can simplify future connections by removing the need for repeated authentication."
         else
