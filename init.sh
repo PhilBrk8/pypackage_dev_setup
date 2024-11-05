@@ -24,15 +24,25 @@ cd .
 echo "Use python 3.13 as soon as possible, due to its built-in support for multi-threaded operations"
 echo "Step down if something breaks until all programs have adopted python3.13 support"
 echo "Script was tested for 3.9 - 3.12" 
-while true; do
-    read -p "In which Python version should the package be? [3.9 / 3.13]: " PACKAGE_PY_VERSION
+# Define a function to check if the input version is valid
+validate_python_version() {
+    local version="$1"
+    if [[ "$version" =~ ^3\.(9|10|11|12|13)(\.[0-9]+)?$ ]]; then
+        return 0  # valid version
+    else
+        return 1  # invalid version
+    fi
+}
 
-    # Validate input: check if it matches one of the allowed versions from 3.6 to 3.13
-    if [[ "$PACKAGE_PY_VERSION" =~ ^3\.(9|10|11|12|13)$ ]]; then
+while true; do
+    read -p "In which Python version should the package be? [e.g., 3.9, 3.12, 3.9.18, 3.13.2]: " PACKAGE_PY_VERSION
+
+    # Validate input: check if it matches allowed versions from 3.9.x to 3.13.x
+    if validate_python_version "$PACKAGE_PY_VERSION"; then
         echo "Valid Python version: $PACKAGE_PY_VERSION"
         break
     else
-        echo "Invalid input. Please enter a version between 3.6 and 3.13 (e.g., 3.9, 3.12)."
+        echo "Invalid input. Please enter a version between 3.9.x and 3.13.x (e.g., 3.9, 3.12.7)."
     fi
 done
 
