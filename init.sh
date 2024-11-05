@@ -46,10 +46,38 @@ while true; do
     fi
 done
 
+# Load .env file if it exists
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+fi
+
+# Function to prompt user and optionally add to .env
+prompt_and_add_to_env() {
+    local var_name=$1
+    local prompt_text=$2
+    local current_value=${!var_name}
+
+    if [ -z "$current_value" ]; then
+        read -p "$prompt_text: " user_input
+        declare -g "$var_name=$user_input"
+
+        # Ask if the user wants to save it to .env for future use
+        read -p "Add to .env for future automatization? (Y/n): " add_to_env
+        if [[ "$add_to_env" =~ ^[Yy]$ || -z "$add_to_env" ]]; then
+            echo "$var_name=\"$user_input\"" >> .env
+            echo "$var_name added to .env file."
+        fi
+    else
+        echo "Using stored $var_name: $current_value"
+    fi
+}
+# Prompt for each required input and optionally store it in .env
 echo "Please provide your personal information (used to make you the author of the package)"
-read -p "What is your name? [Name]: " USER_NAME
-read -p "What is your surname? [Surname]: " USER_SURNAME
-read -p "What is your email? [name.surname@mailprovider.com]: " USER_EMAIL
+prompt_and_add_to_env "USER_NAME" "What is your name? [Name]"
+prompt_and_add_to_env "USER_SURNAME" "What is your surname? [Surname]"
+prompt_and_add_to_env "USER_EMAIL" "What is your email? [name.surname@mailprovider.com]"
+
+# Promt for the feature/branchname
 read -p "What feature do you want to develop first? [does_this]: " FIRST_FEATURE_NAME
 # Check if the URL is using HTTPS
 read -p "Möchtest du ein neues Git-Repository initialisieren? (y/n): " INIT_GIT
