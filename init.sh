@@ -48,9 +48,8 @@ done
 
 # Load .env file if it exists
 if [ -f .env ]; then
-    export $(grep -v '^#' .env | xargs)
+    export $(grep -v '^#' .user_credentials | xargs)
 fi
-
 # Function to prompt user and optionally add to .env
 prompt_and_add_to_env() {
     local var_name=$1
@@ -64,8 +63,8 @@ prompt_and_add_to_env() {
         # Ask if the user wants to save it to .env for future use
         read -p "Add to .env for future automatization? (Y/n): " add_to_env
         if [[ "$add_to_env" =~ ^[Yy]$ || -z "$add_to_env" ]]; then
-            echo "$var_name=\"$user_input\"" >> .env
-            echo "$var_name added to .env file."
+            echo "$var_name=\"$user_input\"" >> .user_credentials
+            echo "$var_name added to .user_credentials file."
         fi
     else
         echo "Using stored $var_name: $current_value"
